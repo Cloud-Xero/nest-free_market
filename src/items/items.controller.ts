@@ -23,7 +23,7 @@ export class ItemsController {
   }
 
   @Get(':id')
-  async findAById(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
+  async findById(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
     return await this.itemsService.findById(id);
   }
 
