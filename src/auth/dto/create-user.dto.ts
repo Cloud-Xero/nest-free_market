@@ -5,7 +5,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { UserStatus } from '../user.status.enum';
+import { UserStatus } from '../user-status.enum';
 
 export class CreateUserDto {
   @IsString()

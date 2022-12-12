@@ -17,6 +17,7 @@ import { CreateItemDto } from './dto/create-item.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { User } from 'src/entities/user.entity';
+import { UserStatus } from 'src/auth/user-status.enum';
 
 @Controller('items')
 @UseInterceptors(ClassSerializerInterceptor)
