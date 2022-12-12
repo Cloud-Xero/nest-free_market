@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { UserStatus } from '../auth/user-status.enum';
 import { ItemStatus } from './item-status.enum';
@@ -9,6 +9,7 @@ const mockItemRepository = () => ({
   find: jest.fn(),
   findOne: jest.fn(),
   createItem: jest.fn(),
+  save: jest.fn(),
 });
 
 const mockUser1 = {
@@ -103,6 +104,33 @@ describe('ItemsService', () => {
         mockUser1,
       });
       expect(result).toEqual(expected);
+    });
+  });
+
+  describe('updateStatus', () => {
+    const mockItem = {
+      id: 'test-id',
+      name: 'PC',
+      price: 50000,
+      description: '',
+      status: ItemStatus.ON_SALE,
+      createdAt: '',
+      updatedAt: '',
+      userId: mockUser1.id,
+      user: mockUser1,
+    };
+
+    it('正常系', async () => {
+      itemRepository.findOne.mockResolvedValue(mockItem);
+      await itemsService.updateStatus('test-id', mockUser2);
+      expect(itemRepository.save).toHaveBeenCalled();
+    });
+
+    it('異常系：自身の商品を購入', async () => {
+      itemRepository.findOne.mockResolvedValue(mockItem);
+      await expect(
+        itemsService.updateStatus('test-id', mockUser1),
+      ).rejects.toThrow(BadRequestException);
     });
   });
 });
